@@ -20,10 +20,20 @@ export interface Libro {
   disponible: boolean;
 }
 
+export interface Prestamo {
+  id?: number;
+  libroId: number;
+  nombrePersona: string;
+  fechaPrestamo: string;
+  fechaDevolucion: string;
+  estado: string;
+  observaciones: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class IndexeddbService {
   private dbName = 'BibliotecaDB';
-  private dbVersion = 1;
+  private dbVersion = 2;
   private db: IDBDatabase | null = null;
 
   async initDB(): Promise<IDBDatabase> {
@@ -41,7 +51,6 @@ export class IndexeddbService {
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-      
         if (!db.objectStoreNames.contains('autores')) {
           const autoresStore = db.createObjectStore('autores', {
             keyPath: 'id',
@@ -50,7 +59,6 @@ export class IndexeddbService {
           autoresStore.createIndex('nombre', 'nombre', { unique: false });
         }
 
-
         if (!db.objectStoreNames.contains('libros')) {
           const librosStore = db.createObjectStore('libros', {
             keyPath: 'id',
@@ -58,6 +66,15 @@ export class IndexeddbService {
           });
           librosStore.createIndex('autorId', 'autorId', { unique: false });
           librosStore.createIndex('titulo', 'titulo', { unique: false });
+        }
+
+        if (!db.objectStoreNames.contains('prestamos')) {
+          const prestamosStore = db.createObjectStore('prestamos', {
+            keyPath: 'id',
+            autoIncrement: true
+          });
+          prestamosStore.createIndex('libroId', 'libroId', { unique: false });
+          prestamosStore.createIndex('estado', 'estado', { unique: false });
         }
       };
     });

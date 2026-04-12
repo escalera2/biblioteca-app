@@ -1,0 +1,94 @@
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="d-flex align-items-center mb-4">
+      <a routerLink="/autores" class="btn btn-outline-secondary me-3">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h2 class="fw-bold mb-0">
+          <i class="bi bi-person-fill me-2 text-primary"></i>
+          {{ esEdicion ? 'Editar Autor' : 'Nuevo Autor' }}
+        </h2>
+        <p class="text-muted mb-0 small">
+          {{ esEdicion ? 'Modifica los datos del autor' : 'Completa los datos del nuevo autor' }}
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="nombre" placeholder="Ej: Gabriel">
+              <div class="text-danger small mt-1"
+                *ngIf="f['nombre'].touched && f['nombre'].errors?.['required']">
+                El nombre es requerido.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Apellido <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="apellido" placeholder="Ej: García Márquez">
+              <div class="text-danger small mt-1"
+                *ngIf="f['apellido'].touched && f['apellido'].errors?.['required']">
+                El apellido es requerido.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nacionalidad <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="nacionalidad">
+                <option value="">Seleccionar...</option>
+                <option>Boliviano/a</option>
+                <option>Colombiano/a</option>
+                <option>Argentino/a</option>
+                <option>Mexicano/a</option>
+                <option>Peruano/a</option>
+                <option>Español/a</option>
+                <option>Otro</option>
+              </select>
+              <div class="text-danger small mt-1"
+                *ngIf="f['nacionalidad'].touched && f['nacionalidad'].errors?.['required']">
+                La nacionalidad es requerida.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Fecha de Nacimiento <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="fechaNacimiento">
+              <div class="text-danger small mt-1"
+                *ngIf="f['fechaNacimiento'].touched && f['fechaNacimiento'].errors?.['required']">
+                La fecha es requerida.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Biografía <span class="text-danger">*</span></label>
+              <textarea class="form-control" rows="4" formControlName="biografia"
+                placeholder="Breve descripción del autor..."></textarea>
+              <div class="text-danger small mt-1"
+                *ngIf="f['biografia'].touched && f['biografia'].errors?.['required']">
+                La biografía es requerida.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-4" [disabled]="cargando">
+              <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+              <i *ngIf="!cargando" class="bi bi-check-lg me-2"></i>
+              {{ esEdicion ? 'Guardar cambios' : 'Crear autor' }}
+            </button>
+            <a routerLink="/autores" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

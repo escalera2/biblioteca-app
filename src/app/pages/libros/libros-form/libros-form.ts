@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { Libro, Autor } from '../../../services/indexeddb';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './libros-form.html',
-  styleUrls: ['./libros-form.scss']
+  styleUrls: ['./libros-form.scss'],
 })
 export class LibrosFormComponent implements OnInit {
   form = inject(FormBuilder).group({
@@ -21,7 +21,7 @@ export class LibrosFormComponent implements OnInit {
     genero: ['', Validators.required],
     descripcion: [''],
     autorId: [0, Validators.required],
-    disponible: [true]
+    disponible: [true],
   });
 
   autores: Autor[] = [];
@@ -32,39 +32,53 @@ export class LibrosFormComponent implements OnInit {
   private autoresService = inject(AutoresService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   async ngOnInit() {
-    this.autores = await this.autoresService.getAll();
-    
+    try {
+      this.autores = await this.autoresService.getAll();
+      this.cdr.detectChanges();
+    } catch (error) {
+      console.error(' Error al cargar autores:', error);
+    }
+
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.isEditing = true;
       this.libroId = +idParam;
-      const libro = await this.librosService.getById(this.libroId);
-      if (libro) {
-        this.form.patchValue({
-          titulo: libro.titulo,
-          isbn: libro.isbn,
-          anioPublicacion: libro.anioPublicacion,
-          genero: libro.genero,
-          descripcion: libro.descripcion,
-          autorId: libro.autorId,
-          disponible: libro.disponible
-        });
+      try {
+        const libro = await this.librosService.getById(this.libroId);
+        if (libro) {
+          this.form.patchValue(libro);
+          this.cdr.detectChanges();
+        }
+      } catch (error) {
+        console.error(' Error al cargar libro:', error);
       }
     }
   }
 
+  trackByAutorId(_index: number, autor: Autor): number {
+    return autor.id!;
+  }
+
   async onSubmit() {
-    if (this.form.invalid) return;
-    
-    const value = this.form.value as Libro;
-    if (this.isEditing && this.libroId) {
-      value.id = this.libroId;
-      await this.librosService.update(value);
-    } else {
-      await this.librosService.create(value);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-    this.router.navigate(['/libros']);
+
+    try {
+      const value = this.form.value as Libro;
+      if (this.isEditing && this.libroId) {
+        value.id = this.libroId;
+        await this.librosService.update(value);
+      } else {
+        await this.librosService.create(value);
+      }
+      this.router.navigate(['/libros']);
+    } catch (error) {
+      console.error(' Error al guardar libro:', error);
+    }
   }
 }

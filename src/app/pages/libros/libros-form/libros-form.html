@@ -22,14 +22,19 @@
                 <label>Género</label>
                 <input type="text" formControlName="genero" class="form-control" />
             </div>
-            <div class="form-group">
-                <label>Autor</label>
-                <select formControlName="autorId" class="form-control">
-                    <option [value]="0" disabled>Seleccione un autor</option>
-                    <option *ngFor="let autor of autores" [value]="autor.id">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Autor <span class="text-danger">*</span></label>
+                <select formControlName="autorId" class="form-select"
+                    [class.is-invalid]="form.get('autorId')?.invalid && form.get('autorId')?.touched">
+                    <option [ngValue]="0" disabled>Seleccione un autor</option>
+                    <option *ngFor="let autor of autores; trackBy: trackByAutorId" [ngValue]="autor.id">
                         {{ autor.nombre }} {{ autor.apellido }} ({{ autor.nacionalidad }})
                     </option>
                 </select>
+                <div class="text-danger small mt-1"
+                    *ngIf="form.get('autorId')?.invalid && form.get('autorId')?.touched">
+                    Debe seleccionar un autor.
+                </div>
             </div>
         </div>
 

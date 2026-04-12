@@ -24,18 +24,18 @@
             <div class="col-md-6">
               <label class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
               <input type="text" class="form-control" formControlName="nombre" placeholder="Ej: Gabriel">
-              <div class="text-danger small mt-1"
-                *ngIf="f['nombre'].touched && f['nombre'].errors?.['required']">
-                El nombre es requerido.
+              <div class="text-danger small mt-1" *ngIf="f['nombre'].touched && f['nombre'].invalid">
+                <div *ngIf="f['nombre'].errors?.['required']">El nombre es requerido.</div>
+                <div *ngIf="f['nombre'].errors?.['minlength']">Debe tener al menos 2 caracteres.</div>
               </div>
             </div>
 
             <div class="col-md-6">
               <label class="form-label fw-semibold">Apellido <span class="text-danger">*</span></label>
               <input type="text" class="form-control" formControlName="apellido" placeholder="Ej: García Márquez">
-              <div class="text-danger small mt-1"
-                *ngIf="f['apellido'].touched && f['apellido'].errors?.['required']">
-                El apellido es requerido.
+              <div class="text-danger small mt-1" *ngIf="f['apellido'].touched && f['apellido'].invalid">
+                <div *ngIf="f['apellido'].errors?.['required']">El apellido es requerido.</div>
+                <div *ngIf="f['apellido'].errors?.['minlength']">Debe tener al menos 2 caracteres.</div>
               </div>
             </div>
 
@@ -70,9 +70,9 @@
               <label class="form-label fw-semibold">Biografía <span class="text-danger">*</span></label>
               <textarea class="form-control" rows="4" formControlName="biografia"
                 placeholder="Breve descripción del autor..."></textarea>
-              <div class="text-danger small mt-1"
-                *ngIf="f['biografia'].touched && f['biografia'].errors?.['required']">
-                La biografía es requerida.
+              <div class="text-danger small mt-1" *ngIf="f['biografia'].touched && f['biografia'].invalid">
+                <div *ngIf="f['biografia'].errors?.['required']">La biografía es requerida.</div>
+                <div *ngIf="f['biografia'].errors?.['minlength']">Debe tener al menos 10 caracteres.</div>
               </div>
             </div>
 

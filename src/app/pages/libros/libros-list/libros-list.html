@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="header-actions">
+    <h2>Listado de Libros</h2>
+    <a routerLink="/libros/nuevo" class="btn btn-primary">Nuevo Libro</a>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>ISBN</th>
+        <th>Autor</th>
+        <th>Año</th>
+        <th>Género</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let libro of libros">
+        <td>{{ libro.titulo }}</td>
+        <td>{{ libro.isbn }}</td>
+        <td>{{ getNombreAutor(libro.autorId) }}</td>
+        <td>{{ libro.anioPublicacion }}</td>
+        <td>{{ libro.genero }}</td>
+        <td class="badge" [class.available]="libro.disponible" [class.unavailable]="!libro.disponible">
+          {{ libro.disponible ? 'Disponible' : 'Prestado' }}
+        </td>
+        <td>
+          <a [routerLink]="['/libros/editar', libro.id]" class="btn btn-sm btn-warning">Editar</a>
+          <button (click)="delete(libro.id!)" class="btn btn-sm btn-danger">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

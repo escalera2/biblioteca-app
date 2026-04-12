@@ -8,7 +8,7 @@ import { AutoresService } from '../../../services/autores';
   selector: 'app-autores-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './autores-form.html'
+  templateUrl: './autores-form.html',
 })
 export class AutoresFormComponent implements OnInit {
   form!: FormGroup;
@@ -20,16 +20,16 @@ export class AutoresFormComponent implements OnInit {
     private fb: FormBuilder,
     private autoresService: AutoresService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
-      nombre:          ['', [Validators.required, Validators.minLength(2)]],
-      apellido:        ['', [Validators.required, Validators.minLength(2)]],
-      nacionalidad:    ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
+      nacionalidad: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
-      biografia:       ['', [Validators.required, Validators.minLength(10)]]
+      biografia: ['', [Validators.required, Validators.minLength(10)]],
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -41,24 +41,37 @@ export class AutoresFormComponent implements OnInit {
   }
 
   async cargarAutor(id: number) {
-    const autor = await this.autoresService.getById(id);
-    if (autor) this.form.patchValue(autor);
+    try {
+      const autor = await this.autoresService.getById(id);
+      if (autor) this.form.patchValue(autor);
+    } catch (error) {
+      console.error('Error al cargar autor:', error);
+    }
   }
 
   async guardar() {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      console.warn('Formulario inválido, revisa los campos:', this.form.errors);
+      return;
+    }
+
     this.cargando = true;
     try {
+      const data = { ...this.form.value };
       if (this.esEdicion && this.autorId) {
-        await this.autoresService.update({ id: this.autorId, ...this.form.value });
+        await this.autoresService.update({ id: this.autorId, ...data });
       } else {
-        await this.autoresService.create(this.form.value);
+        await this.autoresService.create(data);
       }
       this.router.navigate(['/autores']);
-    } catch {
+    } catch (error) {
+      console.error('Error al guardar autor en IndexedDB:', error);
       this.cargando = false;
     }
   }
 
-  get f() { return this.form.controls; }
+  get f() {
+    return this.form.controls;
+  }
 }

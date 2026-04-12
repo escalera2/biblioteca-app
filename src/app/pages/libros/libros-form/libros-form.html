@@ -1,0 +1,55 @@
+<div class="container">
+    <h2>{{ isEditing ? 'Editar Libro' : 'Nuevo Libro' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label>Título</label>
+            <input type="text" formControlName="titulo" class="form-control" />
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>ISBN</label>
+                <input type="text" formControlName="isbn" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Año de Publicación</label>
+                <input type="number" formControlName="anioPublicacion" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Género</label>
+                <input type="text" formControlName="genero" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Autor</label>
+                <select formControlName="autorId" class="form-control">
+                    <option [value]="0" disabled>Seleccione un autor</option>
+                    <option *ngFor="let autor of autores" [value]="autor.id">
+                        {{ autor.nombre }} {{ autor.apellido }} ({{ autor.nacionalidad }})
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Descripción</label>
+            <textarea formControlName="descripcion" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group checkbox">
+            <label>
+                <input type="checkbox" formControlName="disponible" />
+                <span>Disponible para préstamo</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+                {{ isEditing ? 'Actualizar' : 'Guardar' }}
+            </button>
+            <a routerLink="/libros" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,8 @@
+.container { padding: 20px; }
+.header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #fff; }
+.table th, .table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+.table th { background-color: #f4f4f4; }
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
+.available { background-color: #d4edda; color: #155724; }
+.unavailable { background-color: #f8d7da; color: #721c24; }

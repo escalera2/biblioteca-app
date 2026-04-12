@@ -1,0 +1,10 @@
+.container { max-width: 700px; margin: 0 auto; padding: 20px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 500; }
+.form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.form-control:focus { border-color: #007bff; outline: none; }
+.form-row { display: flex; gap: 16px; }
+.form-row .form-group { flex: 1; }
+.checkbox { display: flex; align-items: center; gap: 8px; margin: 16px 0; }
+.checkbox span { cursor: pointer; }
+.form-actions { display: flex; gap: 12px; margin-top: 20px; }

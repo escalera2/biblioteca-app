@@ -1,1 +1,107 @@
-<p>prestamos-form works!</p>
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="d-flex align-items-center mb-4">
+      <a routerLink="/prestamos" class="btn btn-outline-secondary me-3">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h2 class="fw-bold mb-0">
+          <i class="bi bi-book-half me-2 text-warning"></i>
+          {{ esEdicion ? 'Editar Préstamo' : 'Nuevo Préstamo' }}
+        </h2>
+        <p class="text-muted mb-0 small">
+          {{ esEdicion ? 'Modifica los datos del préstamo' : 'Registra un nuevo préstamo' }}
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="sinLibros" class="alert alert-warning mb-4">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      No hay libros disponibles para préstamo. Todos están prestados o
+      <a routerLink="/libros/nuevo" class="fw-bold">agrega un libro nuevo</a>.
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form [formGroup]="form" (ngSubmit)="guardar()">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">
+                Libro <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" formControlName="libroId">
+                <option value="">Seleccionar libro disponible...</option>
+                <option *ngFor="let libro of librosDisponibles" [value]="libro.id">
+                  {{ libro.titulo }} — {{ libro.genero }}
+                </option>
+              </select>
+              <div class="text-danger small mt-1"
+                *ngIf="f['libroId'].touched && f['libroId'].errors?.['required']">
+                Selecciona un libro.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">
+                Nombre de la persona <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control"
+                formControlName="nombrePersona"
+                placeholder="Ej: Juan Pérez">
+              <div class="text-danger small mt-1"
+                *ngIf="f['nombrePersona'].touched && f['nombrePersona'].errors?.['required']">
+                El nombre es requerido.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Fecha de Préstamo <span class="text-danger">*</span>
+              </label>
+              <input type="date" class="form-control" formControlName="fechaPrestamo">
+              <div class="text-danger small mt-1"
+                *ngIf="f['fechaPrestamo'].touched && f['fechaPrestamo'].errors?.['required']">
+                La fecha de préstamo es requerida.
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Fecha de Devolución <span class="text-danger">*</span>
+              </label>
+              <input type="date" class="form-control" formControlName="fechaDevolucion">
+              <div class="text-danger small mt-1"
+                *ngIf="f['fechaDevolucion'].touched && f['fechaDevolucion'].errors?.['required']">
+                La fecha de devolución es requerida.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Observaciones</label>
+              <textarea class="form-control" rows="3"
+                formControlName="observaciones"
+                placeholder="Notas adicionales sobre el préstamo..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-warning px-4"
+              [disabled]="cargando || sinLibros">
+              <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+              <i *ngIf="!cargando" class="bi bi-check-lg me-2"></i>
+              {{ esEdicion ? 'Guardar cambios' : 'Registrar préstamo' }}
+            </button>
+            <a routerLink="/prestamos" class="btn btn-outline-secondary px-4">
+              Cancelar
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

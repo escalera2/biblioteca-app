@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AutoresService } from '../../services/autores';
 import { LibrosService } from '../../services/libros';
-import { Autor, Libro } from '../../services/indexeddb';
+import { IndexeddbService, Autor, Libro, Prestamo } from '../../services/indexeddb';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,9 +19,13 @@ export class DashboardComponent implements OnInit {
   librosDisponibles = 0;
   ultimosLibros: Libro[] = [];
 
+  // 🔥 NUEVO
+  ultimosPrestamos: Prestamo[] = [];
+
   constructor(
     private autoresService: AutoresService,
     private librosService: LibrosService,
+    private db: IndexeddbService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -30,9 +34,10 @@ export class DashboardComponent implements OnInit {
   }
 
   async cargar() {
-    const [autores, libros] = await Promise.all([
+    const [autores, libros, prestamos] = await Promise.all([
       this.autoresService.getAll(),
       this.librosService.getAll(),
+      this.db.getAll<Prestamo>('prestamos')
     ]);
 
     this.totalAutores = autores.length;
@@ -41,6 +46,9 @@ export class DashboardComponent implements OnInit {
     this.totalLibros = libros.length;
     this.librosDisponibles = libros.filter((l) => l.disponible).length;
     this.ultimosLibros = libros.slice(-5).reverse();
+
+    // 🔥 NUEVO
+    this.ultimosPrestamos = prestamos.slice(-5).reverse();
 
     this.cdr.detectChanges();
   }

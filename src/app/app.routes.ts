@@ -5,7 +5,7 @@ import { AutoresFormComponent } from './pages/autores/autores-form/autores-form'
 import { LibrosListComponent } from './pages/libros/libros-list/libros-list';
 import { LibrosFormComponent } from './pages/libros/libros-form/libros-form';
 import { PrestamosListComponent } from './pages/prestamos/prestamos-list/prestamos-list';
-
+import { PrestamosFormComponent } from './pages/prestamos/prestamos-form/prestamos-form';
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
@@ -19,6 +19,8 @@ export const routes: Routes = [
   { path: 'libros/editar/:id', component: LibrosFormComponent },
 
   { path: 'prestamos', component: PrestamosListComponent },
+  { path: 'prestamos/nuevo', component: PrestamosFormComponent },
+  { path: 'prestamos/editar/:id', component: PrestamosFormComponent },
 
   { path: '**', redirectTo: '/dashboard' }
 ];

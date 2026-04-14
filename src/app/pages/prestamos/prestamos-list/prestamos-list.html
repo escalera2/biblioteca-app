@@ -1,0 +1,16 @@
+<h2>Lista de Préstamos</h2>
+
+<input 
+  type="text" 
+  [(ngModel)]="busqueda" 
+  (input)="filtrar()" 
+  placeholder="Buscar préstamo..."
+/>
+
+<ul>
+  <li *ngFor="let p of prestamosFiltrados">
+    <p>
+  {{ p.id }} - {{ p }}
+</p>
+  </li>
+</ul>

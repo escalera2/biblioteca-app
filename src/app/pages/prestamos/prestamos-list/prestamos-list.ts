@@ -2,10 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-// ⚠️ estos servicios tal vez cambian luego
-// por ahora los dejamos así (luego vemos si existen)
-import { PrestamosService } from '../../../services/prestamos';
+import { IndexeddbService, Prestamo } from '../../../services/indexeddb';
 
 @Component({
   selector: 'app-prestamos-list',
@@ -16,12 +13,12 @@ import { PrestamosService } from '../../../services/prestamos';
 })
 export class PrestamosListComponent implements OnInit {
 
-  prestamos: any[] = [];
-  prestamosFiltrados: any[] = [];
+  prestamos: Prestamo[] = [];
+  prestamosFiltrados: Prestamo[] = [];
   busqueda = '';
 
   constructor(
-    private prestamosService: PrestamosService,
+    private db: IndexeddbService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -30,7 +27,7 @@ export class PrestamosListComponent implements OnInit {
   }
 
   async cargarPrestamos() {
-    this.prestamos = await this.prestamosService.getAll();
+    this.prestamos = await this.db.getAll<Prestamo>('prestamos');
     this.prestamosFiltrados = [...this.prestamos];
     this.cdr.detectChanges();
   }
@@ -38,7 +35,8 @@ export class PrestamosListComponent implements OnInit {
   filtrar() {
     const q = this.busqueda.toLowerCase();
     this.prestamosFiltrados = this.prestamos.filter(p =>
-      JSON.stringify(p).toLowerCase().includes(q)
+      p.nombrePersona.toLowerCase().includes(q) ||
+      p.estado.toLowerCase().includes(q)
     );
   }
 }

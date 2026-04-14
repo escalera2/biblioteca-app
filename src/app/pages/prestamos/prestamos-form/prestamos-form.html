@@ -1,1 +1,74 @@
-<p>prestamos-form works!</p>
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="d-flex align-items-center mb-4">
+      <a routerLink="/prestamos" class="btn btn-outline-secondary me-3">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <div>
+        <h2 class="fw-bold mb-0">
+          <i class="bi bi-journal-arrow-down me-2 text-warning"></i>
+          Nuevo Préstamo
+        </h2>
+        <p class="text-muted mb-0 small">
+          Completa los datos del préstamo
+        </p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-4">
+        <form (ngSubmit)="guardar()">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">ID Libro</label>
+              <input type="number" class="form-control"
+                [(ngModel)]="prestamo.libroId" name="libroId">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Nombre Persona</label>
+              <input type="text" class="form-control"
+                [(ngModel)]="prestamo.nombrePersona" name="nombrePersona">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Fecha Préstamo</label>
+              <input type="date" class="form-control"
+                [(ngModel)]="prestamo.fechaPrestamo" name="fechaPrestamo">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Fecha Devolución</label>
+              <input type="date" class="form-control"
+                [(ngModel)]="prestamo.fechaDevolucion" name="fechaDevolucion">
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Estado</label>
+              <input type="text" class="form-control"
+                [(ngModel)]="prestamo.estado" name="estado">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">Observaciones</label>
+              <textarea class="form-control" rows="3"
+                [(ngModel)]="prestamo.observaciones" name="observaciones"></textarea>
+            </div>
+
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-warning px-4">
+              <i class="bi bi-check-lg me-2"></i>
+              Crear préstamo
+            </button>
+            <a routerLink="/prestamos" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -10,7 +10,7 @@ import { Prestamo, Libro } from '../../../services/indexeddb';
   selector: 'app-prestamos-list',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './prestamos-list.html'
+  templateUrl: './prestamos-list.html',
 })
 export class PrestamosListComponent implements OnInit {
   prestamos: Prestamo[] = [];
@@ -24,7 +24,7 @@ export class PrestamosListComponent implements OnInit {
   constructor(
     private prestamosService: PrestamosService,
     private librosService: LibrosService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -33,7 +33,9 @@ export class PrestamosListComponent implements OnInit {
 
   async cargarDatos() {
     const libros = await this.librosService.getAll();
-    libros.forEach(l => { if (l.id) this.librosMap[l.id] = l; });
+    libros.forEach((l) => {
+      if (l.id) this.librosMap[l.id] = l;
+    });
     this.prestamos = await this.prestamosService.getAll();
     this.prestamosFiltrados = [...this.prestamos];
     this.cdr.detectChanges();
@@ -41,10 +43,11 @@ export class PrestamosListComponent implements OnInit {
 
   filtrar() {
     const q = this.busqueda.toLowerCase();
-    this.prestamosFiltrados = this.prestamos.filter(p =>
-      p.nombrePersona.toLowerCase().includes(q) ||
-      p.estado.toLowerCase().includes(q) ||
-      this.getNombreLibro(p.libroId).toLowerCase().includes(q)
+    this.prestamosFiltrados = this.prestamos.filter(
+      (p) =>
+        p.nombrePersona.toLowerCase().includes(q) ||
+        p.estado.toLowerCase().includes(q) ||
+        this.getNombreLibro(p.libroId).toLowerCase().includes(q),
     );
   }
 
@@ -74,6 +77,6 @@ export class PrestamosListComponent implements OnInit {
   mostrarMensaje(msg: string, tipo: string) {
     this.mensaje = msg;
     this.tipoMensaje = tipo;
-    setTimeout(() => this.mensaje = '', 4000);
+    setTimeout(() => (this.mensaje = ''), 4000);
   }
 }

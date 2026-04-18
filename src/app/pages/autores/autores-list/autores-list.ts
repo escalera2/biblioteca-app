@@ -10,7 +10,7 @@ import { Autor } from '../../../services/indexeddb';
   selector: 'app-autores-list',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './autores-list.html'
+  templateUrl: './autores-list.html',
 })
 export class AutoresListComponent implements OnInit {
   autores: Autor[] = [];
@@ -24,7 +24,7 @@ export class AutoresListComponent implements OnInit {
   constructor(
     private autoresService: AutoresService,
     private librosService: LibrosService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -45,10 +45,11 @@ export class AutoresListComponent implements OnInit {
 
   filtrar() {
     const q = this.busqueda.toLowerCase();
-    this.autoresFiltrados = this.autores.filter(a =>
-      a.nombre.toLowerCase().includes(q) ||
-      a.apellido.toLowerCase().includes(q) ||
-      a.nacionalidad.toLowerCase().includes(q)
+    this.autoresFiltrados = this.autores.filter(
+      (a) =>
+        a.nombre.toLowerCase().includes(q) ||
+        a.apellido.toLowerCase().includes(q) ||
+        a.nacionalidad.toLowerCase().includes(q),
     );
   }
 
@@ -61,7 +62,8 @@ export class AutoresListComponent implements OnInit {
     const libros = await this.librosService.getByAutor(this.autorAEliminar.id);
     if (libros.length > 0) {
       this.mostrarMensaje(
-        `No se puede eliminar: el autor tiene ${libros.length} libro(s).`, 'danger'
+        `No se puede eliminar: el autor tiene ${libros.length} libro(s).`,
+        'danger',
       );
       this.autorAEliminar = null;
       return;
@@ -75,6 +77,6 @@ export class AutoresListComponent implements OnInit {
   mostrarMensaje(msg: string, tipo: string) {
     this.mensaje = msg;
     this.tipoMensaje = tipo;
-    setTimeout(() => this.mensaje = '', 4000);
+    setTimeout(() => (this.mensaje = ''), 4000);
   }
 }
